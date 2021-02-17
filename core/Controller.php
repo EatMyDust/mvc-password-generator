@@ -8,8 +8,6 @@ class Controller
 {
     public $layout = 'main';
 
-
-
     public function setLayout($layout)
     {
         $this->layout = $layout;

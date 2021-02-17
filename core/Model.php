@@ -83,7 +83,8 @@ abstract class Model
     public function hasError($attr = ''): bool
     {
         $result = false;
-        if($attr && count($this->errors[$attr])>0){
+
+        if($attr && isset($this->errors[$attr]) && count($this->errors[$attr])>0){
             $result = true;
         }else if(!$attr && count($this->errors)>0){
             $result = true;

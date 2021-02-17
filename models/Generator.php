@@ -37,6 +37,7 @@ class Generator extends Model
                   $arrayBigLetters[$random_big_key]);
 
             $symbolsCount -= 3;
+
         }
 
         if($this->isNumbers()){
@@ -51,9 +52,14 @@ class Generator extends Model
             $symbolsArray = array_merge($symbolsArray, $arraySmallLetters);
         }
 
-        foreach (array_rand($symbolsArray, $symbolsCount) as $symbolKey){
-            $result[] = $symbolsArray[$symbolKey];
+        if($symbolsCount == 1){
+            $result[] = $symbolsArray[array_rand($symbolsArray, $symbolsCount)];
+        }else{
+            foreach (array_rand($symbolsArray, $symbolsCount) as $symbolKey){
+                $result[] = $symbolsArray[$symbolKey];
+            }
         }
+
         shuffle($result);
         return implode("", $result);
     }
