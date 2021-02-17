@@ -12,8 +12,9 @@ class GeneratorController extends Controller
         if($request->getMethod()==='post')
         {
             $model->loadData($request->getBody());
-            if($model->validate())
-            {
+            $model->countMaxSymbols();
+
+            if($model->validate()){
                 $code = $model->generateCode();
                 return $this->render("generator", ['model'=>$model, 'code'=>$code]);
             }

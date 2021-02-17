@@ -11,6 +11,8 @@ abstract class Model
     public const RULE_MIN = 'min';
     public const RULE_MAX = 'max';
     public const RULE_NUMBERS = 'numbers';
+    public const RULE_MAX_NUMBER = 'max_number';
+    public const RULE_MIN_NUMBER = 'min_number';
 
     public function loadData($data)
     {
@@ -45,6 +47,12 @@ abstract class Model
                 if($name === self::RULE_MAX && strlen($value) > $rule['max']){
                     $this->addError($attr, self::RULE_MAX, $rule);
                 }
+                if($name === self::RULE_MAX_NUMBER && $value > $rule['max_number']){
+                    $this->addError($attr, self::RULE_MAX_NUMBER, $rule);
+                }
+                if($name === self::RULE_MIN_NUMBER && $value < $rule['min_number']){
+                    $this->addError($attr, self::RULE_MIN_NUMBER, $rule);
+                }
             }
         }
         return empty($this->errors);
@@ -66,7 +74,9 @@ abstract class Model
             self::RULE_CORRECT => 'Wrong login or password',
             self::RULE_MIN => 'Min length of this field is {min}',
             self::RULE_MAX => 'Max length of this field is {max}',
-            self::RULE_NUMBERS => 'This field require only numbers'
+            self::RULE_NUMBERS => 'This field require only numbers',
+            self::RULE_MIN_NUMBER => 'Min number is {min_number}',
+            self::RULE_MAX_NUMBER => 'Max number is {max_number}',
         ];
     }
 

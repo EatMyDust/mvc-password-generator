@@ -10,6 +10,7 @@ class Generator extends Model
     public $numbers;
     public $big_letters;
     public $small_letters;
+    public $max_symbols = 3;
 
     public function generateCode(): string
     {
@@ -53,8 +54,23 @@ class Generator extends Model
         foreach (array_rand($symbolsArray, $symbolsCount) as $symbolKey){
             $result[] = $symbolsArray[$symbolKey];
         }
-
+        shuffle($result);
         return implode("", $result);
+    }
+
+    public function countMaxSymbols(): void
+    {
+        if($this->isNumbers()){
+            $this->max_symbols += count($this->arrayNumbers());
+        }
+
+        if($this->isSmallLetters()){
+            $this->max_symbols += count($this->arraySmallLetters());
+        }
+
+        if($this->isBigLetters()){
+            $this->max_symbols += count($this->arrayBigLetters());
+        }
     }
 
     //big letters without "O"
@@ -95,7 +111,12 @@ class Generator extends Model
 
     public function rules(): array
     {
-        return ['symbols' => [self::RULE_REQUIRED, [self::RULE_MAX, 'max' => 1], self::RULE_NUMBERS]];
+        return ['symbols' => [self::RULE_REQUIRED,
+                              self::RULE_NUMBERS,
+                              [self::RULE_MAX, 'max' => 2],
+                              [self::RULE_MAX_NUMBER, 'max_number' => $this->max_symbols],
+                              [self::RULE_MIN_NUMBER, 'min_number' => 3]]
+               ];
     }
 
 }
