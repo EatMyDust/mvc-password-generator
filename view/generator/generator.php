@@ -35,7 +35,7 @@
                 <button style="width:100%;margin-top:10px;" type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
             </form>
 
-            <? if($result['code']): ?>
+            <? if(isset($result['code'])): ?>
             <div style="font-size:30px; text-align: center; margin-top:30px; word-break: break-all">
                 <p>Your code is: </p>
                 <p style="font-weight:bold; "><?=$result['code'];?></p>

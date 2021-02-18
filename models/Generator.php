@@ -8,7 +8,7 @@ class Generator extends Model
 {
     public $symbols;
     public $type;
-    public $max_symbols = 3;
+    public $max_symbols;
 
     public function generateCode(): string
     {
@@ -30,8 +30,8 @@ class Generator extends Model
             $result[] = $arraySmallLetters[$random_small_key];
 
             unset($arrayNumbers[$random_number_key],
-                  $arraySmallLetters[$random_small_key],
-                  $arrayBigLetters[$random_big_key]);
+                $arraySmallLetters[$random_small_key],
+                $arrayBigLetters[$random_big_key]);
 
             $symbolsCount -= 3;
         }
@@ -47,6 +47,7 @@ class Generator extends Model
         if($this->isSmallLetters()){
             $symbolsArray = array_merge($symbolsArray, $arraySmallLetters);
         }
+
         if(count($symbolsArray)>0) {
             if ($symbolsCount == 1) {
                 $result[] = $symbolsArray[array_rand($symbolsArray, $symbolsCount)];
@@ -79,16 +80,16 @@ class Generator extends Model
     protected function arrayBigLetters(): array
     {
         return ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
-                'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U',
-                'V', 'W', 'X', 'Y', 'Z'];
+            'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'U',
+            'V', 'W', 'X', 'Y', 'Z'];
     }
 
     //small letters without "l" and "o"
     protected function arraySmallLetters(): array
     {
         return ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
-                'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u',
-                'v', 'w', 'x', 'y', 'z'];
+            'k', 'm', 'n', 'p', 'q', 'r', 's', 't', 'u',
+            'v', 'w', 'x', 'y', 'z'];
     }
 
     protected function arrayNumbers(): array
@@ -98,28 +99,28 @@ class Generator extends Model
 
     protected function isNumbers()
     {
-        return $this->type['numbers'] == '1';
+        return $this->type['numbers'] ?? false;
     }
 
     protected function isSmallLetters()
     {
-        return $this->type['small_letters'] == '1';
+        return $this->type['small_letters'] ?? false;
     }
 
     protected function isBigLetters()
     {
-        return $this->type['big_letters'] == '1';
+        return $this->type['big_letters'] ?? false;
     }
 
     public function rules(): array
     {
         return ['symbols' => [self::RULE_REQUIRED,
-                              self::RULE_NUMBERS,
-                              [self::RULE_MAX, 'max' => 2],
-                              [self::RULE_MAX_NUMBER, 'max_number' => $this->max_symbols],
-                              [self::RULE_MIN_NUMBER, 'min_number' => 3]],
-                'type' => [self::RULE_CHECKED]
-               ];
+            self::RULE_NUMBERS,
+            [self::RULE_MAX, 'max' => 2],
+            [self::RULE_MIN_NUMBER, 'min_number' => 3],
+            [self::RULE_MAX_NUMBER, 'max_number' => $this->max_symbols]],
+            'type' => [self::RULE_CHECKED]
+        ];
     }
 
 }
