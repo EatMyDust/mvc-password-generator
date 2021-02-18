@@ -13,8 +13,9 @@ abstract class Model
     public const RULE_NUMBERS = 'numbers';
     public const RULE_MAX_NUMBER = 'max_number';
     public const RULE_MIN_NUMBER = 'min_number';
+    public const RULE_CHECKED = 'checked';
 
-    public function loadData($data)
+    public function loadData($data): void
     {
         foreach ($data as $key => $value) {
             $this->{$key} = $value;
@@ -23,7 +24,7 @@ abstract class Model
 
     abstract public function rules(): array;
 
-    public array $errors = [];
+    public $errors = [];
 
     public function validate()
     {
@@ -53,7 +54,11 @@ abstract class Model
                 if($name === self::RULE_MIN_NUMBER && $value < $rule['min_number']){
                     $this->addError($attr, self::RULE_MIN_NUMBER, $rule);
                 }
+                if($name === self::RULE_CHECKED && is_null($value)){
+                    $this->addError($attr, self::RULE_CHECKED);
+                }
             }
+
         }
         return empty($this->errors);
     }
@@ -77,6 +82,7 @@ abstract class Model
             self::RULE_NUMBERS => 'This field require only numbers',
             self::RULE_MIN_NUMBER => 'Min number is {min_number}',
             self::RULE_MAX_NUMBER => 'Max number is {max_number}',
+            self::RULE_CHECKED => 'This field need to be checked',
         ];
     }
 
@@ -94,9 +100,7 @@ abstract class Model
 
     public function getFirstError($attr = ''): string
     {
-        $result = '';
-        if($attr)
-        {
+        if($attr){
             $result = $this->errors[$attr][0] ?? '';
         }else{
             $result = current($this->errors)[0] ?? '';

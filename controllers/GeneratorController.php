@@ -9,8 +9,7 @@ class GeneratorController extends Controller
     public function generator($request, $response)
     {
         $model = new Generator();
-        if($request->getMethod()==='post')
-        {
+        if($request->getMethod()==='post'){
             $model->loadData($request->getBody());
             $model->countMaxSymbols();
 

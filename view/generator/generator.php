@@ -9,23 +9,28 @@
                         <?=$result['model']->getFirstError('symbols'); ?>
                     </div>
                 </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" name="numbers">
-                    <label class="form-check-label" for="defaultCheck1">
-                        Numbers without 0 and 1
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck2" name="big_letters">
-                    <label class="form-check-label" for="defaultCheck2">
-                        Big letters without o and O
-                    </label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="1" id="defaultCheck3" name="small_letters">
-                    <label class="form-check-label" for="defaultCheck3">
-                        Small letters without "l"
-                    </label>
+                <div class="form-group">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="defaultCheck1" name="type[numbers]">
+                        <label class="form-check-label" for="defaultCheck1">
+                            Numbers without 0 and 1
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="defaultCheck2" name="type[big_letters]">
+                        <label class="form-check-label" for="defaultCheck2">
+                            Big letters without o and O
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="1" id="defaultCheck3" name="type[small_letters]">
+                        <label class="form-check-label" for="defaultCheck3">
+                            Small letters without "l"
+                        </label>
+                    </div>
+                    <div class="invalid-feedback d-block">
+                        <?=$result['model']->getFirstError('type'); ?>
+                    </div>
                 </div>
                 <button style="width:100%;margin-top:10px;" type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>
             </form>

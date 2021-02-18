@@ -6,10 +6,8 @@ use app\core\Model;
 
 class Generator extends Model
 {
-    public string $symbols;
-    public $numbers;
-    public $big_letters;
-    public $small_letters;
+    public $symbols;
+    public $type;
     public $max_symbols = 3;
 
     public function generateCode(): string
@@ -22,8 +20,7 @@ class Generator extends Model
         $arrayBigLetters = $this->arrayBigLetters();
         $arraySmallLetters = $this->arraySmallLetters();
 
-        if($this->isNumbers() && $this->isBigLetters() && $this->isSmallLetters())
-        {
+        if($this->isNumbers() && $this->isBigLetters() && $this->isSmallLetters()){
             $random_number_key = array_rand($arrayNumbers);
             $random_big_key = array_rand($arrayBigLetters);
             $random_small_key =  array_rand($arraySmallLetters);
@@ -37,7 +34,6 @@ class Generator extends Model
                   $arrayBigLetters[$random_big_key]);
 
             $symbolsCount -= 3;
-
         }
 
         if($this->isNumbers()){
@@ -51,16 +47,16 @@ class Generator extends Model
         if($this->isSmallLetters()){
             $symbolsArray = array_merge($symbolsArray, $arraySmallLetters);
         }
-
-        if($symbolsCount == 1){
-            $result[] = $symbolsArray[array_rand($symbolsArray, $symbolsCount)];
-        }else{
-            foreach (array_rand($symbolsArray, $symbolsCount) as $symbolKey){
-                $result[] = $symbolsArray[$symbolKey];
+        if(count($symbolsArray)>0) {
+            if ($symbolsCount == 1) {
+                $result[] = $symbolsArray[array_rand($symbolsArray, $symbolsCount)];
+            } else if ($symbolsCount > 1) {
+                foreach (array_rand($symbolsArray, $symbolsCount) as $symbolKey) {
+                    $result[] = $symbolsArray[$symbolKey];
+                }
             }
+            shuffle($result);
         }
-
-        shuffle($result);
         return implode("", $result);
     }
 
@@ -102,17 +98,17 @@ class Generator extends Model
 
     protected function isNumbers()
     {
-        return $this->numbers == '1';
+        return $this->type['numbers'] == '1';
     }
 
     protected function isSmallLetters()
     {
-        return $this->small_letters == '1';
+        return $this->type['small_letters'] == '1';
     }
 
     protected function isBigLetters()
     {
-        return $this->big_letters == '1';
+        return $this->type['big_letters'] == '1';
     }
 
     public function rules(): array
@@ -121,7 +117,8 @@ class Generator extends Model
                               self::RULE_NUMBERS,
                               [self::RULE_MAX, 'max' => 2],
                               [self::RULE_MAX_NUMBER, 'max_number' => $this->max_symbols],
-                              [self::RULE_MIN_NUMBER, 'min_number' => 3]]
+                              [self::RULE_MIN_NUMBER, 'min_number' => 3]],
+                'type' => [self::RULE_CHECKED]
                ];
     }
 

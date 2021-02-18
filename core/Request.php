@@ -37,7 +37,11 @@ class Request
             }
         }else if($this->getMethod() === 'post') {
             foreach ($_POST as $key => $item) {
-                $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                if(is_array($item)) {
+                    $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS,FILTER_REQUIRE_ARRAY);
+                } else {
+                    $body[$key] = filter_input(INPUT_POST, $key, FILTER_SANITIZE_SPECIAL_CHARS);
+                }
             }
         }
         return $body;
